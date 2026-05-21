@@ -1,12 +1,22 @@
+name: task-app
 services:
 
   db:
     image: postgres:latest
     ports:
       - "5433:5432"
-
     restart: always
     environment:
       POSTGRES_PASSWORD: myContainer
     volumes:
       - ./postgres-data:/var/lib/postgresql
+
+  ui:
+    image: ghcr.io/devtiro/devtiro-build-task-app:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - BACKEND_HOST=host.docker.internal
+      - BACKEND_PORT=8080
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
