@@ -10,10 +10,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 // REST API Controller for Tasks
 @RestController
@@ -49,5 +48,22 @@ public class TaskController {
         TaskDto createdTaskDto = taskMapper.toDto(task);
 
         return new  ResponseEntity<>(createdTaskDto, HttpStatus.CREATED);
+    }
+
+    /**
+     * List all tasks with an HTTP 200 ok
+     *
+     * @return The list of tasks.
+     */
+    @GetMapping
+    public ResponseEntity<List<TaskDto>> listTasks() {
+        List<Task> tasks = taskService.listTasks();
+
+        // Map the list of Task objects to a list of TaskDto objects.
+        List<TaskDto> taskDtoList = tasks.stream()
+                .map(taskMapper::toDto)
+                .toList();
+
+        return ResponseEntity.ok(taskDtoList);
     }
 }

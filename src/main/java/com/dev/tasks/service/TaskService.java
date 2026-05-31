@@ -3,6 +3,8 @@ package com.dev.tasks.service;
 import com.dev.tasks.domain.CreateTaskRequest;
 import com.dev.tasks.domain.entity.Task;
 
+import java.util.List;
+
 // Service for handling Tasks
 public interface TaskService {
 
@@ -13,4 +15,11 @@ public interface TaskService {
      * @return The created task.
      */
     Task createTask(CreateTaskRequest request);
+
+    /**
+     * List tasks
+     *
+     * @return A list of all tasks
+     */
+    List<Task> listTasks();
 }
