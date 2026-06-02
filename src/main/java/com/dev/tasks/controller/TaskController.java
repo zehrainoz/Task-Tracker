@@ -1,8 +1,10 @@
 package com.dev.tasks.controller;
 
 import com.dev.tasks.domain.CreateTaskRequest;
+import com.dev.tasks.domain.UpdateTaskRequest;
 import com.dev.tasks.domain.dto.CreateTaskRequestDto;
 import com.dev.tasks.domain.dto.TaskDto;
+import com.dev.tasks.domain.dto.UpdateTaskRequestDto;
 import com.dev.tasks.domain.entity.Task;
 import com.dev.tasks.mapper.TaskMapper;
 import com.dev.tasks.service.TaskService;
@@ -13,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 // REST API Controller for Tasks
 @RestController
@@ -65,5 +68,24 @@ public class TaskController {
                 .toList();
 
         return ResponseEntity.ok(taskDtoList);
+    }
+
+    /**
+     * Updates the specified task with the provided information.
+     *
+     * @param id The ID of the task to update
+     * @param updateTaskRequestDto The request DTO used to update the task
+     * @return A representation of the updated task with an HTTP 200
+     */
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<TaskDto> updateTask(
+            @PathVariable UUID id,
+            @Valid @RequestBody UpdateTaskRequestDto updateTaskRequestDto){
+
+        UpdateTaskRequest updateTaskRequest = taskMapper.fromDto(updateTaskRequestDto);
+        Task updatedTask = taskService.updateTask(id, updateTaskRequest);
+        TaskDto updatedTaskDto = taskMapper.toDto(updatedTask);
+
+        return ResponseEntity.ok(updatedTaskDto);
     }
 }

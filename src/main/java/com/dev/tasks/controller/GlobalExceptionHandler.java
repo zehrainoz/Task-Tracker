@@ -1,6 +1,7 @@
 package com.dev.tasks.controller;
 
 import com.dev.tasks.domain.dto.ErrorResponseDto;
+import com.dev.tasks.exception.TaskNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,23 @@ public class GlobalExceptionHandler {
                 .findFirst()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage).orElse("Validation Failed");
 
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(message);
+
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handles the TaskNotFoundException, returning a standardized error
+     * response and an HTTP 400 code.
+     * This exception is thrown when the specified task is not found.
+     *
+     * @param ex The TaskNotFoundException
+     * @return The standardized error and an HTTP 400.
+     */
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleTaskNotFoundException(TaskNotFoundException ex) {
+
+        String message = String.format("Task with ID %s not found", ex.getId());
         ErrorResponseDto errorResponseDto = new ErrorResponseDto(message);
 
         return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
