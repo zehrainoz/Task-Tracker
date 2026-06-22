@@ -33,4 +33,12 @@ public interface TaskService {
      * @return The updated task
      */
     Task updateTask(UUID id, UpdateTaskRequest request);
+
+    /**
+     * Deletes the specified task.
+     * Does not throw an exception when the specified task does not exist.
+     *
+     * @param id The ID of the task to delete.
+     */
+    void deleteTask(UUID id);
 }

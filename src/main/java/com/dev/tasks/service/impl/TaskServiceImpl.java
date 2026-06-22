@@ -9,6 +9,7 @@ import com.dev.tasks.repository.TaskRepository;
 import com.dev.tasks.service.TaskService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
@@ -75,5 +76,11 @@ public class TaskServiceImpl implements TaskService {
         existingTask.setUpdated(Instant.now());
 
         return taskRepository.save(existingTask);
+    }
+
+    @Transactional
+    @Override
+    public void deleteTask(UUID id) {
+        taskRepository.deleteById(id);
     }
 }

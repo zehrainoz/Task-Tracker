@@ -11,7 +11,6 @@ import com.dev.tasks.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -87,5 +86,12 @@ public class TaskController {
         TaskDto updatedTaskDto = taskMapper.toDto(updatedTask);
 
         return ResponseEntity.ok(updatedTaskDto);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable UUID id) {
+
+        taskService.deleteTask(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
